@@ -1,0 +1,7 @@
+package Fragments;
+
+
+
+public class SettingsFragment extends Fragment{
+
+}
