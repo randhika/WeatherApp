@@ -1,0 +1,9 @@
+package Network;
+
+import org.json.JSONObject;
+
+import android.os.AsyncTask;
+
+public class GetWeatherStats extends AsyncTask<Void, Void, JSONObject> {
+
+}

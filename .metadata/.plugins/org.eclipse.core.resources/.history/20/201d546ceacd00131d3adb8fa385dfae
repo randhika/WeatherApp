@@ -1,0 +1,63 @@
+package Network;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
+import Misc.Constants;
+import Misc.UserPreferences;
+import android.os.AsyncTask;
+import android.util.Log;
+
+public class GetWeatherStats extends AsyncTask<Void, Void, JSONObject> {
+
+	@Override
+	protected JSONObject doInBackground(Void... params) {
+
+		HttpClient httpClient = new DefaultHttpClient();
+		// Create the HTTP post
+		UserPreferences userPref = UserPreferences.getUserPreferences();
+		String createTheDestinationURL = String.format(Constants.MAINURL,
+				Constants.APIKEY, userPref.getLatitude(),
+				userPref.getLongtitude());
+		HttpPost httpPost = new HttpPost(createTheDestinationURL);
+
+		HttpResponse response = null;
+		JSONObject responseJsonObject = null;
+		try {
+			response = httpClient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				InputStream inputStream;
+				inputStream = entity.getContent();
+
+				BufferedReader bufferedReader = new BufferedReader(
+						new InputStreamReader(inputStream));
+				StringBuilder builder = new StringBuilder();
+				for (String line = null; (line = bufferedReader.readLine()) != null;) {
+					builder.append(line).append("\n");
+				}
+				responseJsonObject = new JSONObject(builder.toString());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			httpClient.getConnectionManager().shutdown();
+		}
+		return responseJsonObject;
+	}
+	
+	@Override
+	protected void onPostExecute(JSONObject result) {
+		super.onPostExecute(result);
+	}
+
+}

@@ -1,0 +1,50 @@
+package Network;
+
+import org.json.JSONObject;
+
+import Misc.Constants;
+import Misc.UserPreferences;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.TextView;
+import dme.forecastiolib.FIOCurrently;
+import dme.forecastiolib.ForecastIO;
+
+public class GetWeatherStats extends AsyncTask<Void, Void, ForecastIO> {
+
+	TextView temperatureTV;
+	TextView weatherStateTV;
+	TextView cityAndTimeTV;
+	TextView lastUpdateTV;
+
+	public GetWeatherStats(TextView temperatureTV, TextView weatherStateTV,
+			TextView cityAndTimeTV, TextView lastUpdateTV) {
+		temperatureTV = temperatureTV;
+		weatherStateTV = weatherStateTV;
+		cityAndTimeTV = cityAndTimeTV;
+		lastUpdateTV = lastUpdateTV;
+	}
+
+	@Override
+	protected ForecastIO doInBackground(Void... params) {
+
+		UserPreferences userPref = UserPreferences.getUserPreferences();
+
+		ForecastIO fio = new ForecastIO(Constants.APIKEY);
+		fio.setUnits(ForecastIO.UNITS_UK);
+		fio.setExcludeURL("hourly,minutely");
+		fio.getForecast(userPref.getLatitude() + "", userPref.getLongtitude()
+				+ "");
+
+		FIOCurrently currently = new FIOCurrently(fio);
+		double curTemperature = currently.get().temperature();
+
+		return fio;
+	}
+
+	@Override
+	protected void onPostExecute(ForecastIO result) {
+		super.onPostExecute(result);
+	}
+
+}

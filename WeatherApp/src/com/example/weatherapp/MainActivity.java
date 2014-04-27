@@ -8,6 +8,7 @@ import Fragments.HomeFragment;
 import Fragments.MapFragment;
 import Fragments.RSSFragment;
 import Fragments.SettingsFragment;
+import Misc.UserPreferences;
 import Model.NavigationDrawerItem;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -109,6 +110,9 @@ public class MainActivity extends FragmentActivity {
 			displayView(0);
 		}
 		drawerList.setOnItemClickListener(new SlideMenuClickListener());
+
+		// Create the UserPreference Singleton with the Context
+		UserPreferences.getInstance(getApplicationContext());
 	}
 
 	@Override

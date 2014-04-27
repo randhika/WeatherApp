@@ -1,0 +1,13 @@
+package Misc;
+
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+
+public class UserPreferences {
+
+	Location location;
+	Geocoder geoCoder;
+	LocationManager locationManager;
+	
+}

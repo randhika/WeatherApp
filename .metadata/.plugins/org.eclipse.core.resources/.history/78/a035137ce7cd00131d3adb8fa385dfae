@@ -1,0 +1,30 @@
+package Misc;
+
+import java.util.Locale;
+
+import android.content.Context;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.preference.Preference;
+
+public class UserPreferences {
+
+	private static UserPreferences userPreferences = null;
+	
+	Location location;
+	Geocoder geoCoder;
+	LocationManager locationManager;
+	
+	public UserPreferences(Context context) {
+		locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+		location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		geoCoder = new Geocoder(context, Locale.getDefault());
+				
+	}
+	
+	
+	public static UserPreferences getUserPreferences(){
+		return Preference;
+	}
+}

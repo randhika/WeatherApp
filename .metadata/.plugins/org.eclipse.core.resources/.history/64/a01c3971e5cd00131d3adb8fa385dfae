@@ -1,0 +1,20 @@
+package Misc;
+
+import android.content.Context;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+
+public class UserPreferences {
+
+	private static UserPreferences userPreferences = null;
+	
+	Location location;
+	Geocoder geoCoder;
+	LocationManager locationManager;
+	
+	public UserPreferences(Context context) {
+		
+	}
+	
+}

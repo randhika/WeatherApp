@@ -1,0 +1,27 @@
+package Network;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
+import Misc.Constants;
+import Misc.UserPreferences;
+import android.os.AsyncTask;
+
+public class GetWeatherStats extends AsyncTask<Void, Void, JSONObject> {
+
+	
+	@Override
+	protected JSONObject doInBackground(Void... params) {
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		//Create the HTTP post
+		UserPreferences userPref = UserPreferences.getUserPreferences();
+		String createTheDestinationURL = String.format(Constants.MAINURL, );
+		HttpPost httpPost = new HttpPost();
+		
+		return null;
+	}
+
+}

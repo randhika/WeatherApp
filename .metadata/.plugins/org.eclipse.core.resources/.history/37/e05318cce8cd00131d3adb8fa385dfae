@@ -1,0 +1,9 @@
+package Misc;
+
+public class Constants {
+
+	public static String APIKEY  = "7211467e01a810bf56e49869dc41d35a";
+	public static String MAINURL = "https://api.forecast.io/forecast/%s/%s,%s";
+	
+
+}
