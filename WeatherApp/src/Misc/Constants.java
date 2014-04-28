@@ -9,5 +9,8 @@ public class Constants {
 	public static String MAIN_LOG_Key = "LogForChecking";
 
 	// temp Extenssion
-	public static String celciusExtension = " ¡C";
+	public static String celciusExtension = "¡C";
+	
+	//
+	public static String INTENT_EXTRA_DAY_OBJECT = "INTENT_EXTRA_DAY_OBJECT";
 }

@@ -1,0 +1,38 @@
+package Model;
+
+public class WeatherListItem {
+
+	String date;
+	String temp;
+	String iconName;
+	String otherStats;
+	
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getTemp() {
+		return temp;
+	}
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+	public String getIconName() {
+		return iconName;
+	}
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+	public String getOtherStats() {
+		return otherStats;
+	}
+	public void setOtherStats(String otherStats) {
+		this.otherStats = otherStats;
+	}
+	
+	
+	
+}

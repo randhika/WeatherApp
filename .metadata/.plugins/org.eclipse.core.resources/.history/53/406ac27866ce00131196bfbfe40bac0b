@@ -1,0 +1,81 @@
+package Model;
+
+import java.io.Serializable;
+import java.text.DecimalFormat;
+
+import Misc.Constants;
+import dme.forecastiolib.FIODataPoint;
+
+@SuppressWarnings("serial")
+public class WeatherListItem implements Serializable {
+
+	String date;
+	String temp;
+	String iconName;
+	String otherStats;
+	String minMaxTemp;
+	FIODataPoint day;
+
+	public WeatherListItem(FIODataPoint day) {
+		String temp = countAvgTemp(day.temperatureMin(), day.temperatureMax());
+		this.setItems(day.time(), temp + Constants.celciusExtension,
+				day.icon(), day.summary());
+		this.day = day;
+		setMinMaxTemp(day.temperatureMinTime() + Constants.celciusExtension
+				+ " - " + day.temperatureMaxTime() + Constants.celciusExtension);
+	}
+
+	public void setItems(String date, String temp, String iconName,
+			String otherStats) {
+		this.date = date;
+		this.temp = temp;
+		this.iconName = iconName;
+		this.otherStats = otherStats;
+	}
+
+	public String getMinMaxTemp() {
+		return minMaxTemp;
+	}
+
+	public void setMinMaxTemp(String minMaxTemp) {
+		this.minMaxTemp = minMaxTemp;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getTemp() {
+		return temp;
+	}
+
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getOtherStats() {
+		return otherStats;
+	}
+
+	public void setOtherStats(String otherStats) {
+		this.otherStats = otherStats;
+	}
+
+	private String countAvgTemp(double minTemp, double maxTemp) {
+		DecimalFormat df = new DecimalFormat("#.0");
+		return df.format((maxTemp + minTemp) / 2);
+	}
+
+}

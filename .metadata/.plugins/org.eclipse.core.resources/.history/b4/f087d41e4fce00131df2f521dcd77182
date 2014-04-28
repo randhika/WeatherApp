@@ -1,0 +1,9 @@
+package Model;
+
+public class WeatherListItem {
+
+	String date;
+	String temp;
+	String iconName;
+	
+}

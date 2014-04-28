@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/list_background"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         android:background="@color/list_background_pressed"
         android:orientation="vertical"
         android:paddingLeft="10dp" >
@@ -18,7 +17,6 @@
             android:layout_height="0dp"
             android:layout_weight="0.3"
             android:gravity="center_vertical"
-            android:text="17*C"
             android:textSize="30sp" />
 
         <TextView
@@ -27,7 +25,6 @@
             android:layout_height="0dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.1"
-            android:text="Mostly cloudly"
             android:textSize="18sp" />
 
         <TextView
@@ -36,7 +33,6 @@
             android:layout_height="0dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.1"
-            android:text="Skopje"
             android:textSize="18sp" />
 
         <TextView
@@ -45,15 +41,29 @@
             android:layout_height="0dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.1"
-            android:text="Updated At: 27/04 12:16 PM"
             android:textSize="18sp" />
     </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/btn_get_weather"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:text="GetWeather" />
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="@string/Weather_For_Next_Days" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@android:color/holo_blue_light" />
+
+    <ListView
+        android:id="@+id/lv_weather_for_next_day"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>

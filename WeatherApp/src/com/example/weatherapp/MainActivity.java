@@ -10,6 +10,7 @@ import Fragments.RSSFragment;
 import Fragments.SettingsFragment;
 import Misc.UserPreferences;
 import Model.NavigationDrawerItem;
+import Model.WeatherListItem;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -40,12 +41,18 @@ public class MainActivity extends FragmentActivity {
 	private ArrayList<NavigationDrawerItem> navigationDrawerItems;
 	private NavigationDrawerListAdapter adapter;
 
+	
+	public static ArrayList<WeatherListItem> weatherStatsList;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Inflate the XML Layout for this activity
 		setContentView(R.layout.main_activity_layout);
-
+		// Create the UserPreference Singleton with the Context
+		UserPreferences.getInstance(getApplicationContext());
+		
+		
 		appTitle = drawerTitle = getTitle();
 
 		// load slide menu array items
@@ -111,8 +118,7 @@ public class MainActivity extends FragmentActivity {
 		}
 		drawerList.setOnItemClickListener(new SlideMenuClickListener());
 
-		// Create the UserPreference Singleton with the Context
-		UserPreferences.getInstance(getApplicationContext());
+
 	}
 
 	@Override

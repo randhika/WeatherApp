@@ -1,0 +1,67 @@
+package Model;
+
+import java.text.DecimalFormat;
+
+import Misc.Constants;
+import dme.forecastiolib.FIODataPoint;
+
+public class WeatherListItem {
+
+	String date;
+	String temp;
+	String iconName;
+	String otherStats;
+	FIODataPoint day;
+
+	public WeatherListItem(FIODataPoint day) {
+		String temp = countAvgTemp(day.temperatureMin(), day.temperatureMax());
+		this.setItems(day.time(), temp + Constants.celciusExtension,
+				day.icon(), day.summary());
+	}
+
+	public void setItems(String date, String temp, String iconName,
+			String otherStats) {
+		this.date = date;
+		this.temp = temp;
+		this.iconName = iconName;
+		this.otherStats = otherStats;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getTemp() {
+		return temp;
+	}
+
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public String getOtherStats() {
+		return otherStats;
+	}
+
+	public void setOtherStats(String otherStats) {
+		this.otherStats = otherStats;
+	}
+
+	private String countAvgTemp(double minTemp, double maxTemp) {
+		DecimalFormat df = new DecimalFormat("#.0");
+		return df.format((maxTemp + minTemp) / 2);
+	}
+
+}
