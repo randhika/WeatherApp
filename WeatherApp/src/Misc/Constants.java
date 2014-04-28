@@ -13,4 +13,6 @@ public class Constants {
 	
 	//
 	public static String INTENT_EXTRA_DAY_OBJECT = "INTENT_EXTRA_DAY_OBJECT";
+	
+	public static String PICK_CONTACT = "PICK_CONTACT";
 }

@@ -1,0 +1,77 @@
+package Network;
+
+import java.util.ArrayList;
+
+import Adapters.WeatherForNextDaysAdapter;
+import Fragments.HomeFragment;
+import Misc.Constants;
+import Misc.UserPreferences;
+import Model.WeatherListItem;
+import android.os.AsyncTask;
+import android.util.Log;
+import dme.forecastiolib.FIOCurrently;
+import dme.forecastiolib.FIODaily;
+import dme.forecastiolib.FIODataPoint;
+import dme.forecastiolib.ForecastIO;
+
+public class GetWeatherStats extends AsyncTask<Void, Void, ForecastIO> {
+
+	UserPreferences userPref;
+
+	public GetWeatherStats() {
+		userPref = UserPreferences.getUserPreferences();
+	}
+
+	@Override
+	protected ForecastIO doInBackground(Void... params) {
+
+		ForecastIO fio = null;
+		try {
+			fio = new ForecastIO(Constants.APIKEY);
+			fio.setUnits(ForecastIO.UNITS_UK);
+			fio.setExcludeURL("hourly,minutely");
+			fio.getForecast(userPref.getLatitude() + "",
+					userPref.getLongtitude() + "");
+		} catch (Exception e) {
+			Log.v(Constants.MAIN_LOG_Key, "Network Error");
+			return null;
+
+		}
+
+		return fio;
+	}
+
+	@Override
+	protected void onPostExecute(ForecastIO fio) {
+		super.onPostExecute(fio);
+
+		if (fio == null)
+			return;
+
+		// RESET THE list
+		WeatherForNextDaysAdapter.weatherStatsList = new ArrayList<WeatherListItem>();
+
+		FIODaily daily = new FIODaily(fio);
+		// In case there is no daily data available
+		if (daily.days() < 0)
+			Log.v(Constants.MAIN_LOG_Key, "No daily data.");
+		// Print daily data
+		for (int i = 1; i < daily.days(); i++) {
+			FIODataPoint day = daily.getDay(i);
+			WeatherListItem lItem = new WeatherListItem(day);
+			WeatherForNextDaysAdapter.weatherStatsList.add(lItem);
+			lItem.setCity(UserPreferences.getUserPreferences().getCity());
+		}
+
+		HomeFragment.weatherDaysAdapter.notifyDataSetChanged();
+
+		FIOCurrently currently = new FIOCurrently(fio);
+		WeatherForNextDaysAdapter.weatherStatsList.get(0).setTemp(
+				currently.get().temperature() + "");
+		WeatherForNextDaysAdapter.weatherStatsList.get(0).setDate(
+				currently.get().time());
+		WeatherForNextDaysAdapter.weatherStatsList.get(0).setCity(
+				UserPreferences.getUserPreferences().getCity());
+		HomeFragment.updateTodaysWeather();
+	}
+}

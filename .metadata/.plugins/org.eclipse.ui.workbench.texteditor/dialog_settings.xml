@@ -13,10 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
+		<item value="buttonBarButtonStyle" key="selection"/>
 		<list key="findhistory">
+			<item value="buttonBarButtonStyle"/>
+			<item value="get"/>
+			<item value="otherStats"/>
+			<item value="sunset"/>
 			<item value="package Network;"/>
 		</list>
 		<list key="replacehistory">
+			<item value="summary"/>
 		</list>
 	</section>
 </section>

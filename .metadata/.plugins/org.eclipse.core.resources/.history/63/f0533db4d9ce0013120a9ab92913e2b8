@@ -1,0 +1,158 @@
+package Model;
+
+import java.io.Serializable;
+import java.text.DecimalFormat;
+
+import Misc.Constants;
+import dme.forecastiolib.FIODataPoint;
+
+@SuppressWarnings("serial")
+public class WeatherListItem implements Serializable {
+
+	String date, temp, iconName, summary, minMaxTemp, sunriseTime, sunsetTime,
+			moonPhase, windSpeed, cloudCover, humindity, visiblity, city;
+
+	public WeatherListItem(FIODataPoint day) {
+		String temp = countAvgTemp(day.temperatureMin(), day.temperatureMax());
+		this.setItems(day.time(), temp + Constants.celciusExtension,
+				day.icon(), day.summary());
+		setMinMaxTemp(day.temperatureMin() + Constants.celciusExtension + " - "
+				+ day.temperatureMax() + Constants.celciusExtension);
+
+		this.setSunriseTime(day.sunriseTime());
+		this.setSunsetTime(day.sunsetTime());
+		this.setHumindity(day.humidity() + "");
+		this.setWindSpeed(day.windSpeed() + "");
+		this.setCloudCover(day.cloudCover() + "%");
+		this.setVisiblity(day.visibility() + "%");
+
+	}
+
+	private void setItems(String date, String temp, String iconName,
+			String summary) {
+		this.date = date;
+		this.temp = temp;
+		this.iconName = iconName;
+		this.summary = summary;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+	
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getMoonPhase() {
+		return moonPhase;
+	}
+
+	public void setMoonPhase(String moonPhase) {
+		this.moonPhase = moonPhase;
+	}
+
+	public String getWindSpeed() {
+		return windSpeed;
+	}
+
+	public void setWindSpeed(String windSpeed) {
+		this.windSpeed = windSpeed;
+	}
+
+	public String getCloudCover() {
+		return cloudCover;
+	}
+
+	public void setCloudCover(String cloudCover) {
+		this.cloudCover = cloudCover;
+	}
+
+	public String getHumindity() {
+		return humindity;
+	}
+
+	public void setHumindity(String humindity) {
+		this.humindity = humindity;
+	}
+
+	public String getVisiblity() {
+		return visiblity;
+	}
+
+	public void setVisiblity(String visiblity) {
+		this.visiblity = visiblity;
+	}
+
+	public void setSunriseTime(String sunriseTime) {
+		this.sunriseTime = String.format("Sunrise time: \n%s", sunriseTime);
+	}
+
+	public void setSunsetTime(String sunsetTime) {
+		this.sunsetTime = String.format("Sunset time: \n%s", sunsetTime);
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public String getSunriseTime() {
+		return sunriseTime;
+	}
+
+	public String getSunsetTime() {
+		return sunsetTime;
+	}
+
+	public String getMinMaxTemp() {
+		return minMaxTemp;
+	}
+
+	public void setMinMaxTemp(String minMaxTemp) {
+		this.minMaxTemp = minMaxTemp;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getTemp() {
+		return temp;
+	}
+
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	private String countAvgTemp(double minTemp, double maxTemp) {
+		DecimalFormat df = new DecimalFormat("#.0");
+		return df.format((maxTemp + minTemp) / 2);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Weather stats for " + city + " at " + date.split(" ")[0] + "\n" );
+		
+		
+		return sb.toString();
+	}
+
+}

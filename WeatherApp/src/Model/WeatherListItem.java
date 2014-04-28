@@ -9,13 +9,8 @@ import dme.forecastiolib.FIODataPoint;
 @SuppressWarnings("serial")
 public class WeatherListItem implements Serializable {
 
-	String date;
-	String temp;
-	String iconName;
-	String summary;
-	String minMaxTemp;
-	String sunriseTime;
-	String sunsetTime;
+	String date, temp, iconName, summary, minMaxTemp, sunriseTime, sunsetTime,
+			moonPhase, windSpeed, cloudCover, humindity, visiblity, city;
 
 	public WeatherListItem(FIODataPoint day) {
 		String temp = countAvgTemp(day.temperatureMin(), day.temperatureMax());
@@ -26,14 +21,67 @@ public class WeatherListItem implements Serializable {
 
 		this.setSunriseTime(day.sunriseTime());
 		this.setSunsetTime(day.sunsetTime());
+		this.setHumindity(day.humidity() + "");
+		this.setWindSpeed(day.windSpeed() + "");
+		this.setCloudCover(day.cloudCover() + "%");
+		this.setVisiblity(day.visibility() + "%");
+
 	}
 
-	public void setItems(String date, String temp, String iconName,
+	private void setItems(String date, String temp, String iconName,
 			String summary) {
 		this.date = date;
 		this.temp = temp;
 		this.iconName = iconName;
 		this.summary = summary;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getMoonPhase() {
+		return moonPhase;
+	}
+
+	public void setMoonPhase(String moonPhase) {
+		this.moonPhase = moonPhase;
+	}
+
+	public String getWindSpeed() {
+		return windSpeed;
+	}
+
+	public void setWindSpeed(String windSpeed) {
+		this.windSpeed = windSpeed;
+	}
+
+	public String getCloudCover() {
+		return cloudCover;
+	}
+
+	public void setCloudCover(String cloudCover) {
+		this.cloudCover = cloudCover;
+	}
+
+	public String getHumindity() {
+		return humindity;
+	}
+
+	public void setHumindity(String humindity) {
+		this.humindity = humindity;
+	}
+
+	public String getVisiblity() {
+		return visiblity;
+	}
+
+	public void setVisiblity(String visiblity) {
+		this.visiblity = visiblity;
 	}
 
 	public void setSunriseTime(String sunriseTime) {
@@ -95,6 +143,25 @@ public class WeatherListItem implements Serializable {
 	private String countAvgTemp(double minTemp, double maxTemp) {
 		DecimalFormat df = new DecimalFormat("#.0");
 		return df.format((maxTemp + minTemp) / 2);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("Weather stats for " + city + " at " + date.split(" ")[0]);
+		sb.append("\n");
+		sb.append("Temperature: " + temp+ Constants.celciusExtension);
+		sb.append("\n");
+		sb.append(sunriseTime);
+		sb.append("\n");
+		sb.append(sunsetTime);
+		sb.append("\n");
+		sb.append("Wind speed:  " + windSpeed);
+		sb.append("\n");
+		sb.append("Humindity:   " + humindity);
+
+		return sb.toString();
 	}
 
 }

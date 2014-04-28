@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,19 +17,19 @@
                 android:id="@+id/tv_detail_view_avg_temp"
                 style="@style/text_viewStyle"
                 android:layout_width="0dp"
-                android:textSize="25sp"
-                android:textStyle="bold"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3" />
+                android:layout_weight="0.3"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_detail_view_location"
                 style="@style/text_viewStyle"
                 android:layout_width="0dp"
-                android:textSize="30sp"
-                android:textStyle="bold"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7" />
+                android:layout_weight="0.7"
+                android:textSize="30sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,10 +41,10 @@
                 android:id="@+id/tv_detail_view_min_max_temp"
                 style="@style/text_viewStyle"
                 android:layout_width="0dp"
-                android:textSize="13sp"
-                android:gravity="center"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3" />
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/tv_detail_view_date"
@@ -172,6 +172,40 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="@string/Weather_For_Next_Days" />
+
+        <LinearLayout
+            android:id="@+id/footer"
+            style="android:attr/buttonBarStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Blue"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_sendSms"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/send_sms"
+                android:textColor="@color/CreamWhite" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/CreamWhite" />
+
+            <Button
+                android:id="@+id/btn_sendMail"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/send_mail"
+                android:textColor="@color/CreamWhite" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

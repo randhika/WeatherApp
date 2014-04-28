@@ -9,7 +9,6 @@ import Misc.UserPreferences;
 import Model.WeatherListItem;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 import dme.forecastiolib.FIOCurrently;
 import dme.forecastiolib.FIODaily;
 import dme.forecastiolib.FIODataPoint;
@@ -17,18 +16,9 @@ import dme.forecastiolib.ForecastIO;
 
 public class GetWeatherStats extends AsyncTask<Void, Void, ForecastIO> {
 
-	TextView temperatureTV;
-	TextView weatherStateTV;
-	TextView cityAndTimeTV;
-	TextView lastUpdateTV;
 	UserPreferences userPref;
 
-	public GetWeatherStats(TextView temperatureTV, TextView weatherStateTV,
-			TextView cityAndTimeTV, TextView lastUpdateTV) {
-		this.temperatureTV = temperatureTV;
-		this.weatherStateTV = weatherStateTV;
-		this.cityAndTimeTV = cityAndTimeTV;
-		this.lastUpdateTV = lastUpdateTV;
+	public GetWeatherStats() {
 		userPref = UserPreferences.getUserPreferences();
 	}
 
@@ -44,6 +34,8 @@ public class GetWeatherStats extends AsyncTask<Void, Void, ForecastIO> {
 					userPref.getLongtitude() + "");
 		} catch (Exception e) {
 			Log.v(Constants.MAIN_LOG_Key, "Network Error");
+			return null;
+
 		}
 
 		return fio;
@@ -64,20 +56,22 @@ public class GetWeatherStats extends AsyncTask<Void, Void, ForecastIO> {
 		if (daily.days() < 0)
 			Log.v(Constants.MAIN_LOG_Key, "No daily data.");
 		// Print daily data
-		for (int i = 0; i < daily.days(); i++) {
+		for (int i = 1; i < daily.days(); i++) {
 			FIODataPoint day = daily.getDay(i);
-			WeatherForNextDaysAdapter.weatherStatsList.add(new WeatherListItem(
-					day));
+			WeatherListItem lItem = new WeatherListItem(day);
+			WeatherForNextDaysAdapter.weatherStatsList.add(lItem);
+			lItem.setCity(UserPreferences.getUserPreferences().getCity());
 		}
 
-		HomeFragment.weatherDaysAdapter.notifyDataSetChanged();
-
 		FIOCurrently currently = new FIOCurrently(fio);
-		temperatureTV.setText(currently.get().temperature()
-				+ Constants.celciusExtension);
-		weatherStateTV.setText(currently.get().summary());
-		cityAndTimeTV.setText(userPref.getCity());
-		lastUpdateTV.setText(currently.get().time());
+		WeatherForNextDaysAdapter.weatherStatsList.get(0).setTemp(
+				currently.get().temperature() + "");
+		WeatherForNextDaysAdapter.weatherStatsList.get(0).setDate(
+				currently.get().time());
+		WeatherForNextDaysAdapter.weatherStatsList.get(0).setCity(
+				UserPreferences.getUserPreferences().getCity());
+		
+		HomeFragment.weatherDaysAdapter.notifyDataSetChanged();
+		HomeFragment.updateTodaysWeather();
 	}
-
 }

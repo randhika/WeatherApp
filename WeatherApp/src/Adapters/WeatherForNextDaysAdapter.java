@@ -24,21 +24,22 @@ public class WeatherForNextDaysAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return weatherStatsList.size();
+		return weatherStatsList.size() - 1;
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return weatherStatsList.get(position);
+		return weatherStatsList.get(position++);
 	}
 
 	@Override
 	public long getItemId(int pos) {
-		return pos;
+		return pos++;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		position++;
 		if (convertView == null) {
 			LayoutInflater mInflater = (LayoutInflater) context
 					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);

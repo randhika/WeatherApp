@@ -1,0 +1,224 @@
+package com.example.weatherapp;
+
+import Misc.Constants;
+import Model.WeatherListItem;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Contacts;
+import android.telephony.SmsManager;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.weatherapp.R.id;
+
+public class DetailViewActivity extends Activity implements OnClickListener {
+
+	TextView date, averageTemp, summary, minMaxTemp, sunriseTime, sunsetTime,
+			moonPhase, windSpeed, cloudCover, humindity, visiblity, town;
+
+	Button sendSms, sendMail;
+
+	WeatherListItem currentItem;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.detail_view_activity_layout);
+
+		currentItem = (WeatherListItem) getIntent().getSerializableExtra(
+				Constants.INTENT_EXTRA_DAY_OBJECT);
+		initViews();
+	}
+
+	public void initViews() {
+		averageTemp = (TextView) findViewById(R.id.tv_detail_view_avg_temp);
+		averageTemp.setText(currentItem.getTemp());
+
+		town = (TextView) findViewById(id.tv_detail_view_location);
+		town.setText(currentItem.getCity());
+
+		minMaxTemp = (TextView) findViewById(R.id.tv_detail_view_min_max_temp);
+		minMaxTemp.setText(currentItem.getMinMaxTemp());
+
+		date = (TextView) findViewById(R.id.tv_detail_view_date);
+		date.setText(currentItem.getDate());
+
+		sunriseTime = (TextView) findViewById(R.id.tv_detail_view_sunrise_time);
+		sunriseTime.setText(currentItem.getSunriseTime());
+
+		sunsetTime = (TextView) findViewById(R.id.tv_detail_view_sunset_time);
+		sunsetTime.setText(currentItem.getSunsetTime());
+
+		summary = (TextView) findViewById(R.id.tv_detail_view_summary);
+		summary.setText(currentItem.getSummary());
+
+		windSpeed = (TextView) findViewById(R.id.tv_detail_view_wind_speed);
+		windSpeed.setText("Wind speed: " + currentItem.getWindSpeed());
+
+		cloudCover = (TextView) findViewById(R.id.tv_detail_view_cloud_cover);
+		cloudCover.setText("Cloud Cover: " + currentItem.getCloudCover());
+
+		visiblity = (TextView) findViewById(R.id.tv_detail_view_visibility);
+		visiblity.setText("Visibility:" + currentItem.getVisiblity());
+
+		humindity = (TextView) findViewById(R.id.tv_detail_view_humidity);
+		humindity.setText("Humindity: " + currentItem.getHumindity());
+
+		sendMail = (Button) findViewById(R.id.btn_sendMail);
+		sendSms = (Button) findViewById(R.id.btn_sendSms);
+		sendMail.setOnClickListener(this);
+		sendSms.setOnClickListener(this);
+
+		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setIcon(R.drawable.ic_home);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			this.finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_sendMail:
+			sendMail();
+			break;
+		case R.id.btn_sendSms:
+			sendSms();
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void sendMail() {
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType("message/rfc822");
+		i.putExtra(Intent.EXTRA_SUBJECT, "Weather Statistic");
+		i.putExtra(Intent.EXTRA_TEXT, currentItem.toString());
+		try {
+			startActivity(Intent.createChooser(i, "Send mail..."));
+		} catch (android.content.ActivityNotFoundException ex) {
+			Toast.makeText(DetailViewActivity.this,
+					"There are no email clients installed.", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	EditText input;
+
+	private void sendSms() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("Send Weather Stats");
+		alert.setMessage("Enter number to recive weather stats");
+
+		// Set an EditText view to get user input
+		input = new EditText(this);
+		alert.setView(input);
+
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+
+				String value = input.getText().toString();
+				sendSms(value);
+
+			}
+		});
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Canceled.
+					}
+				});
+		alert.setNeutralButton("Choose Contact",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						Intent pickContactIntent = new Intent(
+								Intent.ACTION_PICK, Uri
+										.parse("content://contacts"));
+						pickContactIntent.setType(Phone.CONTENT_TYPE); // Show
+																		// user
+																		// only
+																		// contacts
+																		// w/
+																		// phone
+																		// numbers
+						startActivityForResult(pickContactIntent,
+								PICK_CONTACT_REQUEST);
+					}
+				});
+
+		alert.show();
+	}
+
+	public static final int PICK_CONTACT_REQUEST = 100;
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check which request it is that we're responding to
+		if (requestCode == PICK_CONTACT_REQUEST) {
+			// Make sure the request was successful
+			if (resultCode == RESULT_OK) {
+				// Get the URI that points to the selected contact
+				Uri contactUri = data.getData();
+				// We only need the NUMBER column, because there will be only
+				// one row in the result
+				String[] projection = { Phone.NUMBER };
+
+				// Perform the query on the contact to get the NUMBER column
+				// We don't need a selection or sort order (there's only one
+				// result for the given URI)
+				// CAUTION: The query() method should be called from a separate
+				// thread to avoid blocking
+				// your app's UI thread. (For simplicity of the sample, this
+				// code doesn't do that.)
+				// Consider using CursorLoader to perform the query.
+				Cursor cursor = getContentResolver().query(contactUri,
+						projection, null, null, null);
+				cursor.moveToFirst();
+
+				// Retrieve the phone number from the NUMBER column
+				int column = cursor.getColumnIndex(Phone.NUMBER);
+				String number = cursor.getString(column);
+				input.setText(number);
+			}
+		}
+	}
+
+	private void sendSms(String number) {
+		SmsManager sms = SmsManager.getDefault();
+		PendingIntent sentPI;
+		String SENT = "SMS_SENT";
+		String messageToSend = currentItem.toString().trim();
+		if (messageToSend.length() > 158)
+			messageToSend = messageToSend.substring(0, 158);
+
+		sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
+
+		sms.sendTextMessage(number, null, messageToSend, sentPI, null);
+
+	}
+
+}
