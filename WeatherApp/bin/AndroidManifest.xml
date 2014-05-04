@@ -55,10 +55,26 @@
             android:value="@integer/google_play_services_version" />
 
         <!-- Setup the content provider -->
-<!--         <provider
+        <!--
+             <provider
             android:name="com.example.weatherapp.model.WeatherContentProvider"
-            android:authorities="com.example.weatherapp.model.WeatherContentProvider" /> -->
-        
+            android:authorities="com.example.weatherapp.model.WeatherContentProvider" />
+        -->
+
+
+        <!-- Setup the Service -->
+        <service
+            android:name=".WeatherService"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/service_name" >
+        </service>
+
+        <!-- Broadcast Reciver -->
+        <receiver android:name=".WeatherServiceBroadcastReciver" >
+            <intent-filter>
+                <action android:name="com.example.weatherapp.service.receiver" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

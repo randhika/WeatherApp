@@ -8,7 +8,6 @@ import Misc.Constants;
 import Misc.UserPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import com.example.weatherapp.model.WeatherListItem;
 

@@ -1,0 +1,28 @@
+package Network;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+public class WeatherServiceBroadcastReciver extends BroadcastReceiver {
+
+	 @Override
+	    public void onReceive(Context context, Intent intent) {
+	      Bundle bundle = intent.getExtras();
+	      if (bundle != null) {
+	        String string = bundle.getString(DownloadService.FILEPATH);
+	        int resultCode = bundle.getInt(DownloadService.RESULT);
+	        if (resultCode == RESULT_OK) {
+	          Toast.makeText(MainActivity.this,
+	              "Download complete. Download URI: " + string,
+	              Toast.LENGTH_LONG).show();
+	          textView.setText("Download done");
+	        } else {
+	          Toast.makeText(MainActivity.this, "Download failed",
+	              Toast.LENGTH_LONG).show();
+	          textView.setText("Download failed");
+	        }
+	      }
+	    }
+
+}

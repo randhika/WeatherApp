@@ -5,12 +5,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.preference.PreferenceManager;
 
 public class UserPreferences {
 
@@ -19,8 +22,11 @@ public class UserPreferences {
 	Location location;
 	Geocoder geoCoder;
 	LocationManager locationManager;
+	SharedPreferences sharedPreferences;
 
 	public UserPreferences(Context context) {
+		sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
 		locationManager = (LocationManager) context
 				.getSystemService(Context.LOCATION_SERVICE);
 		location = locationManager
@@ -67,5 +73,20 @@ public class UserPreferences {
 	public String getTodayDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		return sdf.format(new Date());
+	}
+
+	static String NOTIFICATION_STATE_KEY = "NOTIFICATION_STATE_KEY";
+
+	public void changeNotificationState() {
+		if (notificationOn())
+			this.sharedPreferences.edit().putBoolean(NOTIFICATION_STATE_KEY,
+					false).commit();
+		else
+			this.sharedPreferences.edit().putBoolean(NOTIFICATION_STATE_KEY,
+					true).commit();
+	}
+
+	public boolean notificationOn() {
+		return this.sharedPreferences.getBoolean(NOTIFICATION_STATE_KEY, false);
 	}
 }

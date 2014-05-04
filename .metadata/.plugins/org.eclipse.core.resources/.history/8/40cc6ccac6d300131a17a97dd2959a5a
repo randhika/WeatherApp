@@ -1,0 +1,81 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.weatherapp"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <!-- Creating Permission to receive Google Maps -->
+    <permission
+        android:name="com.example.weatherapp.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <!-- Permission to receive Google Maps -->
+    <uses-permission android:name="com.example.weatherapp.permission.MAPS_RECEIVE" />
+
+    <!-- Permission to read Google Services -->
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <!-- Maps API needs OpenGL ES 2.0. -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity android:name=".MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="DetailViewActivity"
+            android:label="@string/detail_view" />
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/googleMapsApiKey" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <!-- Setup the content provider -->
+        <!--
+             <provider
+            android:name="com.example.weatherapp.model.WeatherContentProvider"
+            android:authorities="com.example.weatherapp.model.WeatherContentProvider" />
+        -->
+
+
+        <!-- Setup the Service -->
+        <service
+            android:name="WeatherService"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/service_name" >
+
+        </service>
+        
+            <!-- Broadcast Reciver -->
+                    <receiver android:name=".WeatherServiceBroadcastReciver" >
+                <intent-filter>
+                    <action android:name="com.ant.notificationBroadcastReciver" />
+                </intent-filter>
+            </receiver>
+    </application>
+
+</manifest>

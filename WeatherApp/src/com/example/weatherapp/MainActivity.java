@@ -6,8 +6,8 @@ import Adapters.NavigationDrawerListAdapter;
 import Fragments.HistoryFragment;
 import Fragments.HomeFragment;
 import Fragments.MapsFragment;
-import Fragments.RSSFragment;
 import Fragments.SettingsFragment;
+import Misc.Constants;
 import Misc.UserPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -49,6 +49,19 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		// Inflate the XML Layout for this activity
 		setContentView(R.layout.main_activity_layout);
+		init();
+
+		// Saving activity state
+		if (savedInstanceState == null)
+			displayView(0);
+		else {
+			int position = savedInstanceState
+					.getInt(Constants.DRAWER_ITEM_POSITION_KEY);
+			drawerList.setSelection(position);
+		}
+	}
+
+	private void init() {
 		// Create the UserPreference Singleton with the Context
 		UserPreferences.getInstance(getApplicationContext());
 
@@ -80,9 +93,6 @@ public class MainActivity extends FragmentActivity {
 		navigationDrawerItems.add(new NavigationDrawerItem(
 				navigationMenuTitles[3], navigationMenuIcons.getResourceId(3,
 						-1)));
-		navigationDrawerItems.add(new NavigationDrawerItem(
-				navigationMenuTitles[4], navigationMenuIcons.getResourceId(4,
-						-1)));
 
 		// Recyle the typed array
 		navigationMenuIcons.recycle();
@@ -111,10 +121,6 @@ public class MainActivity extends FragmentActivity {
 
 		drawerLayout.setDrawerListener(drawerToggle);
 
-		if (savedInstanceState == null) {
-			// on first time display view for first nav item
-			displayView(0);
-		}
 		drawerList.setOnItemClickListener(new SlideMenuClickListener());
 	}
 
@@ -153,13 +159,15 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(Constants.DRAWER_ITEM_POSITION_KEY,
+				drawerList.getSelectedItemPosition());
 		return;
 	}
 
-	static MapsFragment mapFragment = new MapsFragment();
 	/**
 	 * Diplaying fragment view for selected nav drawer list item
 	 * */
@@ -171,15 +179,12 @@ public class MainActivity extends FragmentActivity {
 			fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = mapFragment;
+			fragment = new MapsFragment();
 			break;
 		case 2:
 			fragment = new HistoryFragment();
 			break;
 		case 3:
-			fragment = new RSSFragment();
-			break;
-		case 4:
 			fragment = new SettingsFragment();
 			break;
 		default:
@@ -201,7 +206,6 @@ public class MainActivity extends FragmentActivity {
 			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
-	
 
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during
@@ -227,7 +231,10 @@ public class MainActivity extends FragmentActivity {
 			displayView(position);
 		}
 	}
-	
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
 
 }

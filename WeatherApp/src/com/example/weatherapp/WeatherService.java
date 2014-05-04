@@ -1,0 +1,49 @@
+package com.example.weatherapp;
+
+import dme.forecastiolib.FIOCurrently;
+import dme.forecastiolib.ForecastIO;
+import Misc.Constants;
+import Misc.UserPreferences;
+import android.app.Activity;
+import android.app.IntentService;
+import android.content.Intent;
+import android.util.Log;
+
+public class WeatherService extends IntentService {
+
+	private int result = Activity.RESULT_CANCELED;
+	public static final String RESULT = "result";
+	public static final String NOTIFICATION = "com.example.weatherapp.service.receiver";
+
+	public WeatherService() {
+		super("WeatherService");
+	}
+
+	// will be called asynchronously by Android
+	@Override
+	protected void onHandleIntent(Intent intent) {
+		UserPreferences userPref = UserPreferences.getUserPreferences();
+		ForecastIO fio = null;
+		try {
+			fio = new ForecastIO(Constants.APIKEY);
+			fio.setUnits(ForecastIO.UNITS_UK);
+			fio.setExcludeURL("hourly,minutely");
+			fio.getForecast(userPref.getLatitude() + "",
+					userPref.getLongtitude() + "");
+			FIOCurrently currently = new FIOCurrently(fio);
+			publishResults(currently);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.v(Constants.MAIN_LOG_Key, "Network Error");
+		}
+	}
+
+	private void publishResults(FIOCurrently current) {
+		result = Activity.RESULT_OK;
+		Intent intent = new Intent(NOTIFICATION);
+		intent.putExtra(RESULT, result);
+		intent.putExtra(Constants.SERVICE_INTENT_WEATEHR_TEMP_EXTRA, current
+				.get().temperature() + Constants.celciusExtension);
+		sendBroadcast(intent);
+	}
+}

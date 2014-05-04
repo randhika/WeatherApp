@@ -10,9 +10,16 @@ public class Constants {
 
 	// temp Extenssion
 	public static String celciusExtension = "¡C";
-	
+
 	//
 	public static String INTENT_EXTRA_DAY_OBJECT = "INTENT_EXTRA_DAY_OBJECT";
-	
+
 	public static String PICK_CONTACT = "PICK_CONTACT";
+
+	public static long SERVICE_UPDATE_TIME = 30 * 10000;
+
+	public static String SERVICE_INTENT_WEATEHR_TEMP_EXTRA = "SERVICE_INTENT_WEATEHR_TEMP_EXTRA";
+	
+	public static String DRAWER_ITEM_POSITION_KEY = "DRAWER_ITEM_POSITION_KEY";
+	public static String SHARED_PREFERENCES_KEY   = "SHARED_PREFERENCES_KEY";
 }

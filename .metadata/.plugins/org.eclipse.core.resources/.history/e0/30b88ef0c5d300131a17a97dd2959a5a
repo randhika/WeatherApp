@@ -1,0 +1,26 @@
+package Network;
+
+import android.app.IntentService;
+import android.content.Intent;
+
+public class WeatherService extends IntentService {
+
+	 private int result = Activity.RESULT_CANCELED;
+	  public static final String URL = "urlpath";
+	  public static final String FILENAME = "filename";
+	  public static final String FILEPATH = "filepath";
+	  public static final String RESULT = "result";
+	  public static final String NOTIFICATION = "com.vogella.android.service.receiver";
+
+	public WeatherService(String name) {
+		super(name);
+	}
+
+	// will be called asynchronously by Android
+	@Override
+	protected void onHandleIntent(Intent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

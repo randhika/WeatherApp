@@ -1,0 +1,32 @@
+package com.example.weatherapp;
+
+import android.app.Activity;
+import android.app.IntentService;
+import android.content.Intent;
+
+public class WeatherService extends IntentService {
+
+	private int result = Activity.RESULT_CANCELED;
+	public static final String RESULT = "result";
+	public static final String NOTIFICATION = "com.example.weatherapp.service.receiver";
+
+	public WeatherService(String name) {
+		super(name);
+	}
+	
+	public WeatherService(){
+		
+	}
+
+	// will be called asynchronously by Android
+	@Override
+	protected void onHandleIntent(Intent arg0) {
+		// TODO Auto-generated method stub
+		publishResults();
+	}
+
+	private void publishResults() {
+		Intent intent = new Intent(NOTIFICATION);
+		sendBroadcast(intent);
+	}
+}

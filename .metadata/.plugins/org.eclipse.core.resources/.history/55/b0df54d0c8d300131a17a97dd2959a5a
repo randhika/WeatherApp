@@ -1,0 +1,34 @@
+package com.example.weatherapp;
+
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
+public class WeatherServiceBroadcastReciver extends BroadcastReceiver {
+
+	private static final long REPEAT_TIME = 1000 * 30;
+	
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		Bundle bundle = intent.getExtras();
+		if (bundle != null) {
+			int resultCode = bundle.getInt(WeatherService.RESULT);
+			if (resultCode == Activity.RESULT_OK) {
+				Toast.makeText(context, "SERVICE UPDATED", Toast.LENGTH_LONG)
+						.show();
+				updateService();
+			} else {
+				Toast.makeText(context, "Service update failed",
+						Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+	
+	public void updateService(){
+		
+	}
+
+}

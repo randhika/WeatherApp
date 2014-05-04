@@ -1,0 +1,44 @@
+package com.example.weatherapp;
+
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
+
+public class WeatherServiceBroadcastReciver extends BroadcastReceiver {
+	private Context context;
+	private int notificationIcon = R.drawable.ic_launcher;;
+	private static final int notificationID = 111226;
+	private NotificationCompat.Builder nBuilder;
+	private NotificationManager mNotificationManager;
+	private Intent braodacastIntent;
+	private PendingIntent pendingIntent;// = new
+	private PendingIntent pIntent;
+	
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		Bundle bundle = intent.getExtras();
+		if (bundle != null) {
+			int resultCode = bundle.getInt(WeatherService.RESULT);
+			if (resultCode == Activity.RESULT_OK) {
+				Toast.makeText(context, "SERVICE UPDATED", Toast.LENGTH_SHORT)
+						.show();
+				updateNotification();
+			} else {
+				Toast.makeText(context, "Service update failed",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+	
+	private void updateNotification(){
+		Intent i = new Intent(context,MainActivity.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	}
+
+}

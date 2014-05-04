@@ -1,0 +1,88 @@
+package Misc;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.preference.PreferenceManager;
+
+public class UserPreferences {
+
+	private static UserPreferences userPreferences = null;
+
+	Location location;
+	Geocoder geoCoder;
+	LocationManager locationManager;
+	SharedPreferences sharedPreferences;
+
+	public UserPreferences(Context context) {
+		sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		locationManager = (LocationManager) context
+				.getSystemService(Context.LOCATION_SERVICE);
+		location = locationManager
+				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		geoCoder = new Geocoder(context, Locale.getDefault());
+
+	}
+
+	public static UserPreferences getUserPreferences() {
+		return userPreferences;
+	}
+
+	public static UserPreferences getInstance(Context context) {
+		if (userPreferences == null)
+			userPreferences = new UserPreferences(context);
+		return userPreferences;
+	}
+
+	public double getLongtitude() {
+		if (location == null)
+			return 0;
+		return location.getLongitude();
+	}
+
+	public double getLatitude() {
+		if (location == null)
+			return 0;
+		return location.getLatitude();
+	}
+
+	public String getCity() {
+		try {
+			List<Address> adresses = geoCoder.getFromLocation(getLatitude(),
+					getLongtitude(), 1);
+			if (adresses.size() > 0)
+				return adresses.get(0).getLocality();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "Skopje";
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	public String getTodayDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		return sdf.format(new Date());
+	}
+	
+	static String NOTIFICATION_STATE_KEY = "NOTIFICATION_STATE_KEY";
+	public void changeNotificationState(){
+		if(notificationOn())
+			this.sharedPreferences.edit().putBoolean(NOTIFICATION_STATE_KEY, false);
+		else
+			this.sharedPreferences.edit().putBoolean(NOTIFICATION_STATE_KEY, true);
+	}
+	public boolean notificationOn(){
+		return this.sharedPreferences.getBoolean(NOTIFICATION_STATE_KEY, false);
+	}
+}
