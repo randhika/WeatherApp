@@ -1,0 +1,166 @@
+package com.example.weatherapp.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+
+public class WeatherDatabase {
+
+	private SQLiteDatabase database;
+	private WeatherSQLiteHelper dbHelper;
+	private String[] allColumns = { WeatherSQLiteHelper.WEATHER_City,
+			WeatherSQLiteHelper.WEATHER_Cloud,
+			WeatherSQLiteHelper.WEATHER_DATE,
+			WeatherSQLiteHelper.WEATHER_HUMINDITY,
+			WeatherSQLiteHelper.WEATHER_IconName,
+			WeatherSQLiteHelper.WEATHER_minMaxTemp,
+			WeatherSQLiteHelper.WEATHER_Moon,
+			WeatherSQLiteHelper.WEATHER_SUMMARY,
+			WeatherSQLiteHelper.WEATHER_Sunrise,
+			WeatherSQLiteHelper.WEATHER_Sunset,
+			WeatherSQLiteHelper.WEATHER_TEMP,
+			WeatherSQLiteHelper.WEATHER_Visibility,
+			WeatherSQLiteHelper.WEATHER_Wind };
+
+	public WeatherDatabase(Context context) {
+		dbHelper = new WeatherSQLiteHelper(context);
+	}
+
+	public void open() throws SQLiteException {
+		database = dbHelper.getWritableDatabase();
+	}
+
+	public void close() {
+		dbHelper.close();
+	}
+
+	public void addWeatherItem(WeatherListItem item) {
+
+		ContentValues cv = new ContentValues();
+		cv.put(WeatherSQLiteHelper.WEATHER_City, item.getCity());
+		cv.put(WeatherSQLiteHelper.WEATHER_Cloud, item.getCloudCover());
+		cv.put(WeatherSQLiteHelper.WEATHER_DATE, item.getDate());
+		cv.put(WeatherSQLiteHelper.WEATHER_HUMINDITY, item.getHumindity());
+		cv.put(WeatherSQLiteHelper.WEATHER_IconName, item.getIconName());
+		cv.put(WeatherSQLiteHelper.WEATHER_minMaxTemp, item.getMinMaxTemp());
+		cv.put(WeatherSQLiteHelper.WEATHER_Moon, item.getMoonPhase());
+		cv.put(WeatherSQLiteHelper.WEATHER_SUMMARY, item.getSummary());
+		cv.put(WeatherSQLiteHelper.WEATHER_Sunrise, item.getSunriseTime());
+		cv.put(WeatherSQLiteHelper.WEATHER_Sunset, item.getSunsetTime());
+		cv.put(WeatherSQLiteHelper.WEATHER_TEMP, item.getTemp());
+		cv.put(WeatherSQLiteHelper.WEATHER_Visibility, item.getVisiblity());
+		cv.put(WeatherSQLiteHelper.WEATHER_Wind, item.getWindSpeed());
+		database.insert(WeatherSQLiteHelper.TABLE_WEATHER, null, cv);
+	}
+
+	public void updateWeatherItem(WeatherListItem item) {
+
+		ContentValues cv = new ContentValues();
+		cv.put(WeatherSQLiteHelper.WEATHER_City, item.getCity());
+		cv.put(WeatherSQLiteHelper.WEATHER_Cloud, item.getCloudCover());
+		cv.put(WeatherSQLiteHelper.WEATHER_DATE, item.getDate());
+		cv.put(WeatherSQLiteHelper.WEATHER_HUMINDITY, item.getHumindity());
+		cv.put(WeatherSQLiteHelper.WEATHER_IconName, item.getIconName());
+		cv.put(WeatherSQLiteHelper.WEATHER_minMaxTemp, item.getMinMaxTemp());
+		cv.put(WeatherSQLiteHelper.WEATHER_Moon, item.getMoonPhase());
+		cv.put(WeatherSQLiteHelper.WEATHER_SUMMARY, item.getSummary());
+		cv.put(WeatherSQLiteHelper.WEATHER_Sunrise, item.getSunriseTime());
+		cv.put(WeatherSQLiteHelper.WEATHER_Sunset, item.getSunsetTime());
+		cv.put(WeatherSQLiteHelper.WEATHER_TEMP, item.getTemp());
+		cv.put(WeatherSQLiteHelper.WEATHER_Visibility, item.getVisiblity());
+		cv.put(WeatherSQLiteHelper.WEATHER_Wind, item.getWindSpeed());
+
+		String whereClause = WeatherSQLiteHelper.WEATHER_DATE + " = "
+				+ item.getDate();
+		database.update(WeatherSQLiteHelper.TABLE_WEATHER, cv, whereClause,
+				null);
+	}
+
+	public void addWeatherItemsList(List<WeatherListItem> list) {
+		this.open();
+		for (int i = 0; i < list.size(); i++) {
+			checkIfItemExist(list.get(0));
+		}
+		this.close();
+	}
+
+	public void checkIfItemExist(WeatherListItem item) {
+		addWeatherItem(item);
+//		return;
+//		String whereClause = WeatherSQLiteHelper.WEATHER_DATE + " LIKE "
+//				+ item.getDate();
+//		Cursor cursor = database.query(WeatherSQLiteHelper.TABLE_WEATHER,
+//				allColumns, whereClause, null, null, null, null);
+//		if (cursor == null)
+//			addWeatherItem(item);
+//		else
+//			updateWeatherItem(item);
+	}
+
+	public List<WeatherListItem> getAllWeatherItems() {
+		this.open();
+		List<WeatherListItem> weatherItems = new ArrayList<WeatherListItem>();
+		Cursor cursor = database.query(WeatherSQLiteHelper.TABLE_WEATHER,
+				allColumns, null, null, null, null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			WeatherListItem currentItem = cursorToWeatherListItem(cursor);
+			weatherItems.add(currentItem);
+			cursor.moveToNext();
+		}
+		this.close();
+		return weatherItems;
+	}
+
+	public List<WeatherListItem> getAllWeatherItemsFromToday() {
+		List<WeatherListItem> weatherItems = new ArrayList<WeatherListItem>();
+		Cursor cursor = database.query(WeatherSQLiteHelper.TABLE_WEATHER,
+				allColumns, null, null, null, null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			WeatherListItem currentItem = cursorToWeatherListItem(cursor);
+			weatherItems.add(currentItem);
+			cursor.moveToNext();
+		}
+		return weatherItems;
+	}
+	
+//	cv.put(WeatherSQLiteHelper.WEATHER_City, item.getCity());
+//	cv.put(WeatherSQLiteHelper.WEATHER_Cloud, item.getCloudCover());
+//	cv.put(WeatherSQLiteHelper.WEATHER_DATE, item.getDate());
+//	cv.put(WeatherSQLiteHelper.WEATHER_HUMINDITY, item.getHumindity());
+//	cv.put(WeatherSQLiteHelper.WEATHER_IconName, item.getIconName());
+//	cv.put(WeatherSQLiteHelper.WEATHER_minMaxTemp, item.getMinMaxTemp());
+//	cv.put(WeatherSQLiteHelper.WEATHER_Moon, item.getMoonPhase());
+//	cv.put(WeatherSQLiteHelper.WEATHER_SUMMARY, item.getSummary());
+//	cv.put(WeatherSQLiteHelper.WEATHER_Sunrise, item.getSunriseTime());
+//	cv.put(WeatherSQLiteHelper.WEATHER_Sunset, item.getSunsetTime());
+//	cv.put(WeatherSQLiteHelper.WEATHER_TEMP, item.getTemp());
+//	cv.put(WeatherSQLiteHelper.WEATHER_Visibility, item.getVisiblity());
+//	cv.put(WeatherSQLiteHelper.WEATHER_Wind, item.getWindSpeed());
+
+
+	private WeatherListItem cursorToWeatherListItem(Cursor cursor) {
+		WeatherListItem item = new WeatherListItem();
+
+		item.setCity(cursor.getString(0));
+		item.setDate(cursor.getString(1));
+		item.setTemp(cursor.getString(2));
+		item.setIconName(cursor.getString(3));
+		item.setSummary(cursor.getString(4));
+		item.setMinMaxTemp(cursor.getString(5));
+		item.setSunriseTime(cursor.getString(6));
+		item.setSunsetTime(cursor.getString(7));
+		item.setMoonPhase(cursor.getString(8));
+		item.setWindSpeed(cursor.getString(9));
+		item.setCloudCover(cursor.getString(10));
+		item.setHumindity(cursor.getString(11));
+		item.setVisiblity(cursor.getString(12));
+		return item;
+	}
+}

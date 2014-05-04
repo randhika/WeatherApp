@@ -1,0 +1,84 @@
+package Model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+
+public class WeatherDatabase {
+
+	private SQLiteDatabase database;
+	private WeatherSQLiteHelper dbHelper;
+	private String[] allColumns = { WeatherSQLiteHelper.WEATHER_City,
+			WeatherSQLiteHelper.WEATHER_Cloud,
+			WeatherSQLiteHelper.WEATHER_DATE,
+			WeatherSQLiteHelper.WEATHER_HUMINDITY,
+			WeatherSQLiteHelper.WEATHER_IconName,
+			WeatherSQLiteHelper.WEATHER_minMaxTemp,
+			WeatherSQLiteHelper.WEATHER_Moon,
+			WeatherSQLiteHelper.WEATHER_SUMMARY,
+			WeatherSQLiteHelper.WEATHER_Sunrise,
+			WeatherSQLiteHelper.WEATHER_Sunset,
+			WeatherSQLiteHelper.WEATHER_TEMP,
+			WeatherSQLiteHelper.WEATHER_Visibility,
+			WeatherSQLiteHelper.WEATHER_Wind };
+
+	public WeatherDatabase(Context context) {
+		dbHelper = new WeatherSQLiteHelper(context);
+	}
+
+	public void open() throws SQLiteException {
+		database = dbHelper.getWritableDatabase();
+	}
+
+	public void close() {
+		dbHelper.close();
+	}
+
+	public void deleteWeatherItem() {
+	}
+
+	public void addWeatherItem(WeatherListItem item) {
+
+		ContentValues cv = new ContentValues();
+		cv.put(WeatherSQLiteHelper.WEATHER_City, item.getCity());
+		cv.put(WeatherSQLiteHelper.WEATHER_Cloud, item.getCloudCover());
+		cv.put(WeatherSQLiteHelper.WEATHER_DATE, item.getDate());
+		cv.put(WeatherSQLiteHelper.WEATHER_HUMINDITY, item.getHumindity());
+		cv.put(WeatherSQLiteHelper.WEATHER_IconName, item.getIconName());
+		cv.put(WeatherSQLiteHelper.WEATHER_minMaxTemp, item.getMinMaxTemp());
+		cv.put(WeatherSQLiteHelper.WEATHER_Moon, item.getMoonPhase());
+		cv.put(WeatherSQLiteHelper.WEATHER_SUMMARY, item.getSummary());
+		cv.put(WeatherSQLiteHelper.WEATHER_Sunrise, item.getSunriseTime());
+		cv.put(WeatherSQLiteHelper.WEATHER_Sunset, item.getSunsetTime());
+		cv.put(WeatherSQLiteHelper.WEATHER_TEMP, item.getTemp());
+		cv.put(WeatherSQLiteHelper.WEATHER_Visibility, item.getVisiblity());
+		cv.put(WeatherSQLiteHelper.WEATHER_Wind, item.getWindSpeed());
+		database.insert(WeatherSQLiteHelper.TABLE_WEATHER, null, cv);
+	}
+
+	public WeatherListItem getWeatherItem() {
+		return null;
+	}
+
+	public List<WeatherListItem> getAllWeatherItems() {
+		List<WeatherListItem> weatherItems = new ArrayList<WeatherListItem>();
+		Cursor cursor = database.query(WeatherSQLiteHelper.TABLE_WEATHER,
+				allColumns, null, null, null, null, null);
+		cursor.moveToFirst()
+		while(!cursor.isAfterLast()){
+			WeatherListItem currentItem = cursorToWeatherListItem(cursor);
+			weatherItems.add(currentItem);
+			cursor.moveToNext();
+		}
+		return weatherItems;
+	}
+
+	private WeatherListItem cursorToWeatherListItem(Cursor cursor) {
+		return null;
+	}
+}

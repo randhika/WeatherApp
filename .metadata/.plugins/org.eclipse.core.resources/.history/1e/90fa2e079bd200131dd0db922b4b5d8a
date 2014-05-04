@@ -1,0 +1,61 @@
+package Model;
+
+import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+
+public class WeatherDatabase {
+
+	private SQLiteDatabase database;
+	private WeatherSQLiteHelper dbHelper;
+
+	public WeatherDatabase(Context context) {
+		dbHelper = new WeatherSQLiteHelper(context);
+	}
+
+	public void open() throws SQLiteException {
+		database = dbHelper.getWritableDatabase();
+	}
+
+	public void close() {
+		dbHelper.close();
+	}
+
+	public void deleteWeatherItem() {
+	}
+
+	public void addWeatherItem(WeatherListItem item) {
+
+		ContentValues cv = new ContentValues();
+		cv.put(WeatherSQLiteHelper.WEATHER_City, item.getCity());
+		cv.put(WeatherSQLiteHelper.WEATHER_Cloud, item.getCloudCover());
+		cv.put(WeatherSQLiteHelper.WEATHER_DATE, item.getDate());
+		cv.put(WeatherSQLiteHelper.WEATHER_HUMINDITY, item.getHumindity());
+		cv.put(WeatherSQLiteHelper.WEATHER_IconName, item.getIconName());
+		cv.put(WeatherSQLiteHelper.WEATHER_minMaxTemp, item.getMinMaxTemp());
+		cv.put(WeatherSQLiteHelper.WEATHER_Moon, item.getMoonPhase());
+		cv.put(WeatherSQLiteHelper.WEATHER_SUMMARY, item.getSummary());
+		cv.put(WeatherSQLiteHelper.WEATHER_Sunrise, item.getSunriseTime());
+		cv.put(WeatherSQLiteHelper.WEATHER_Sunset, item.getSunsetTime());
+		cv.put(WeatherSQLiteHelper.WEATHER_TEMP, item.getTemp());
+		cv.put(WeatherSQLiteHelper.WEATHER_Visibility, item.getVisiblity());
+		cv.put(WeatherSQLiteHelper.WEATHER_Wind, item.getWindSpeed());
+		database.insert(WeatherSQLiteHelper.TABLE_WEATHERt, null, cv);
+	}
+
+	public WeatherListItem getWeatherItem() {
+		return null;
+	}
+
+	public List<WeatherListItem> getAllWeatherItems() {
+		return null;
+	}
+
+	private WeatherListItem cursorToWeatherListItem(Cursor cursor) {
+		return null;
+	}
+}

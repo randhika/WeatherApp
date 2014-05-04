@@ -3,14 +3,12 @@ package com.example.weatherapp;
 import java.util.ArrayList;
 
 import Adapters.NavigationDrawerListAdapter;
-import Fragments.FavouritesFragment;
+import Fragments.HistoryFragment;
 import Fragments.HomeFragment;
-import Fragments.MapFragment;
+import Fragments.MapsFragment;
 import Fragments.RSSFragment;
 import Fragments.SettingsFragment;
 import Misc.UserPreferences;
-import Model.NavigationDrawerItem;
-import Model.WeatherListItem;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -24,6 +22,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.example.weatherapp.model.NavigationDrawerItem;
+import com.example.weatherapp.model.WeatherListItem;
 
 public class MainActivity extends FragmentActivity {
 
@@ -41,9 +42,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayList<NavigationDrawerItem> navigationDrawerItems;
 	private NavigationDrawerListAdapter adapter;
 
-	
 	public static ArrayList<WeatherListItem> weatherStatsList;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,8 +51,7 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.main_activity_layout);
 		// Create the UserPreference Singleton with the Context
 		UserPreferences.getInstance(getApplicationContext());
-		
-		
+
 		appTitle = drawerTitle = getTitle();
 
 		// load slide menu array items
@@ -117,12 +116,11 @@ public class MainActivity extends FragmentActivity {
 			displayView(0);
 		}
 		drawerList.setOnItemClickListener(new SlideMenuClickListener());
-
-
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
@@ -136,13 +134,14 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public void setTitle(CharSequence title) {
+		super.setTitle(title);
 		appTitle = title;
 		getActionBar().setTitle(appTitle);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
+		super.onOptionsItemSelected(item);
 		if (drawerToggle.onOptionsItemSelected(item))
 			return true;
 
@@ -154,7 +153,13 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		return;
+	}
 
+	static MapsFragment mapFragment = new MapsFragment();
 	/**
 	 * Diplaying fragment view for selected nav drawer list item
 	 * */
@@ -166,10 +171,10 @@ public class MainActivity extends FragmentActivity {
 			fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new MapFragment();
+			fragment = mapFragment;
 			break;
 		case 2:
-			fragment = new FavouritesFragment();
+			fragment = new HistoryFragment();
 			break;
 		case 3:
 			fragment = new RSSFragment();
@@ -196,6 +201,7 @@ public class MainActivity extends FragmentActivity {
 			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
+	
 
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during
@@ -221,5 +227,7 @@ public class MainActivity extends FragmentActivity {
 			displayView(position);
 		}
 	}
+	
+
 
 }

@@ -1,17 +1,14 @@
 package com.example.weatherapp;
 
 import Misc.Constants;
-import Model.WeatherListItem;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weatherapp.R.id;
+import com.example.weatherapp.model.WeatherListItem;
 
 public class DetailViewActivity extends Activity implements OnClickListener {
 

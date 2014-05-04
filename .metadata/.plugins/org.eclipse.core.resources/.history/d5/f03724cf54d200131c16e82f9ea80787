@@ -1,0 +1,35 @@
+package Fragments;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.weatherapp.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+
+public class MapsFragment extends Fragment {
+
+	private View view;
+	private MapView mapView;
+	/**
+	 * Note that this may be null if the Google Play services APK is not
+	 * available.
+	 */
+
+	private static GoogleMap mMap;
+	private static Double latitude, longitude;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.map_fragment_layout, container, false);
+		mapView = (MapView) view.findViewById(R.id.location_map);
+		mMap = mapView.getMap();
+		mapView.onCreate(savedInstanceState);
+		return view;
+	}
+
+}

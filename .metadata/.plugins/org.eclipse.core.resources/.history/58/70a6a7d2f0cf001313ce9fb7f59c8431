@@ -1,0 +1,14 @@
+package Model;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+public class WeatherDatabase {
+
+	private SQLiteDatabase database;
+	private WeatherSQLiteHelper dbHelper;
+	
+	public WeatherDatabase(Context context){
+		dbHelper = new WeatherSQLiteHelper(context);
+	}
+}

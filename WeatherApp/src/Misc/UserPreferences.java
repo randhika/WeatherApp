@@ -1,9 +1,11 @@
 package Misc;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -59,5 +61,11 @@ public class UserPreferences {
 			e.printStackTrace();
 		}
 		return "Skopje";
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	public String getTodayDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		return sdf.format(new Date());
 	}
 }

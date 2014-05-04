@@ -1,0 +1,22 @@
+package Model;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+
+public class WeatherDatabase {
+
+	private SQLiteDatabase database;
+	private WeatherSQLiteHelper dbHelper;
+	
+	public WeatherDatabase(Context context){
+		dbHelper = new WeatherSQLiteHelper(context);
+	}
+	
+	public void open() throws SQLiteException{
+		database = dbHelper.getWritableDatabase();
+	}
+	public void close(){
+		dbHelper.close();
+	}
+}

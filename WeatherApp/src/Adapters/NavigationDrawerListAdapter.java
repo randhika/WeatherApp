@@ -2,7 +2,6 @@ package Adapters;
 
 import java.util.ArrayList;
 
-import Model.NavigationDrawerItem;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.weatherapp.R;
+import com.example.weatherapp.model.NavigationDrawerItem;
 
 public class NavigationDrawerListAdapter extends BaseAdapter {
 

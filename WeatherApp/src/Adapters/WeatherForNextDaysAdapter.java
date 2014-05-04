@@ -1,8 +1,8 @@
 package Adapters;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import Model.WeatherListItem;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,11 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.weatherapp.R;
+import com.example.weatherapp.model.WeatherListItem;
 
 public class WeatherForNextDaysAdapter extends BaseAdapter {
 
 	Context context;
-	public static ArrayList<WeatherListItem> weatherStatsList = new ArrayList<WeatherListItem>();
+	public static List<WeatherListItem> weatherStatsList = new ArrayList<WeatherListItem>();
 
 	public WeatherForNextDaysAdapter(Context context) {
 		this.context = context;
@@ -58,6 +59,7 @@ public class WeatherForNextDaysAdapter extends BaseAdapter {
 		// ImageView icon =
 		// (ImageView)convertView.findViewById(R.id.iv_weather_list_item_icon);
 
+		//get rid of the time only show the date
 		date.setText(weatherStatsList.get(position).getDate());
 		temp.setText(weatherStatsList.get(position).getTemp());
 		stats.setText(weatherStatsList.get(position).getSummary());

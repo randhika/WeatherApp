@@ -1,0 +1,47 @@
+package Model;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class WeatherSQLiteHelper extends SQLiteOpenHelper{
+
+	public static final String DATABASE_NAME = "weatherdatabse.db";
+	public static final int DATABASE_VERSION = 1;
+	
+	public static final String TABLE_WEATHER = "weatherTable";
+	//Table columns
+	public static final String WEATHER_ID 		= "_id";
+	public static final String WEATHER_DATE		= "date";
+	public static final String WEATHER_TEMP		= "temperature";
+	public static final String WEATHER_IconName = "iconName";
+	public static final String WEATHER_SUMMARY  = "summary";
+	public static final String WEATHER_minMaxTemp="minMaxTemperature";
+	public static final String WEATHER_Sunrise   ="SunriseTime";
+	public static final String WEATHER_Sunset	 ="SunsetTime";
+	public static final String WEATHER_Moon	 	 = "Moonphase";
+	public static final String WEATHER_Wind		 = "WindSpeed";
+	public static final String WEATHER_Cloud	 = "CloudCover";
+	public static final String WEATHER_HUMINDITY = "Humindity";
+	public static final String WEATHER_Visibility= "Visibility";
+	public static final String WEATHER_City		 = "City";	
+	
+	public WeatherSQLiteHelper(Context context, String name,
+			CursorFactory factory, int version) {
+		super(context, name, factory, version);
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

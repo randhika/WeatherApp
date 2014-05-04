@@ -1,0 +1,7 @@
+package Adapters;
+
+import android.widget.BaseAdapter;
+
+public class WeatherHistoryAdapter extends BaseAdapter{
+
+}
