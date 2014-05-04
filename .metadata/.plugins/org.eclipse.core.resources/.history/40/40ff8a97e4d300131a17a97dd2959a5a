@@ -47,12 +47,12 @@ public class MainActivity extends FragmentActivity {
 	private ArrayList<NavigationDrawerItem> navigationDrawerItems;
 	private NavigationDrawerListAdapter adapter;
 
-	// Objects for Notification Center
+	//Objects for Notification Center
 	Calendar cal;
 	Intent intent;
 	PendingIntent pintent;
 	AlarmManager alarm;
-
+	
 	public static ArrayList<WeatherListItem> weatherStatsList;
 
 	@Override
@@ -78,7 +78,8 @@ public class MainActivity extends FragmentActivity {
 		cal = Calendar.getInstance();
 		intent = new Intent(this, WeatherService.class);
 		pintent = PendingIntent.getService(this, 0, intent, 0);
-		alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		alarm = (AlarmManager)getSystemService(
+				Context.ALARM_SERVICE);
 
 		appTitle = drawerTitle = getTitle();
 
@@ -245,16 +246,6 @@ public class MainActivity extends FragmentActivity {
 			// display view for selected nav drawer item
 			displayView(position);
 		}
-	}
-
-	public void startServiceRepeating() {
-		// Start every 30 seconds
-		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
-				Constants.SERVICE_UPDATE_TIME, pintent);
-	}
-
-	public void stopServiceRepeating() {
-		alarm.cancel(pintent);
 	}
 
 }

@@ -5,7 +5,6 @@ import java.util.Calendar;
 import Misc.Constants;
 import Misc.UserPreferences;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.example.weatherapp.MainActivity;
 import com.example.weatherapp.R;
 import com.example.weatherapp.WeatherService;
 
@@ -27,6 +25,10 @@ public class SettingsFragment extends Fragment implements
 
 	View myView;
 	CheckBox changeNotificationState;
+	Calendar cal;
+	Intent intent;
+	PendingIntent pintent;
+	AlarmManager alarm;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,37 +40,34 @@ public class SettingsFragment extends Fragment implements
 	}
 
 	public void init() {
-
+		cal = Calendar.getInstance();
+		intent = new Intent(getActivity(), WeatherService.class);
+		pintent = PendingIntent.getService(getActivity(), 0, intent, 0);
+		alarm = (AlarmManager) getActivity().getSystemService(
+				Context.ALARM_SERVICE);
 		changeNotificationState = (CheckBox) myView
 				.findViewById(R.id.cb_shouldRunService);
 		changeNotificationState.setChecked(UserPreferences.getUserPreferences()
 				.notificationOn());
 		changeNotificationState.setOnCheckedChangeListener(this);
-		changeNotificationState();
 	}
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
 		UserPreferences.getUserPreferences().changeNotificationState();
-		changeNotificationState();
+		if (isChecked)
+			startServiceRepeating();
+		else
+			stopServiceRepeating();
 	}
 
-	private void changeNotificationState() {
-
-		MainActivity activity = (MainActivity) getActivity();
-		if (changeNotificationState.isChecked()) {
-			activity.startServiceRepeating();
-		} else {
-			activity.stopServiceRepeating();
-			removeNotifications();
-		}
+	private void startServiceRepeating() {
+		// Start every 30 seconds
+		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+				Constants.SERVICE_UPDATE_TIME, pintent);
 	}
 
-	private void removeNotifications() {
-		NotificationManager nm = (NotificationManager) getActivity()
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.cancel(Constants.notificationID);
+	private void stopServiceRepeating() {
+		alarm.cancel(pintent);
 	}
-
 }

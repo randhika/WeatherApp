@@ -22,5 +22,5 @@ public class Constants {
 	
 	public static String DRAWER_ITEM_POSITION_KEY = "DRAWER_ITEM_POSITION_KEY";
 	public static String SHARED_PREFERENCES_KEY   = "SHARED_PREFERENCES_KEY";
-	public static final int notificationID = 111226;
+	private static final int notificationID = 111226;
 }

@@ -5,7 +5,6 @@ import java.util.Calendar;
 import Misc.Constants;
 import Misc.UserPreferences;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +27,7 @@ public class SettingsFragment extends Fragment implements
 	View myView;
 	CheckBox changeNotificationState;
 
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -44,7 +44,6 @@ public class SettingsFragment extends Fragment implements
 		changeNotificationState.setChecked(UserPreferences.getUserPreferences()
 				.notificationOn());
 		changeNotificationState.setOnCheckedChangeListener(this);
-		changeNotificationState();
 	}
 
 	@Override
@@ -53,22 +52,15 @@ public class SettingsFragment extends Fragment implements
 		UserPreferences.getUserPreferences().changeNotificationState();
 		changeNotificationState();
 	}
-
-	private void changeNotificationState() {
-
-		MainActivity activity = (MainActivity) getActivity();
-		if (changeNotificationState.isChecked()) {
+	
+	private void changeNotificationState(){
+		
+		MainActivity activity = (MainActivity)getActivity();
+		if (isChecked){
 			activity.startServiceRepeating();
-		} else {
+			}
+		else
 			activity.stopServiceRepeating();
-			removeNotifications();
-		}
-	}
-
-	private void removeNotifications() {
-		NotificationManager nm = (NotificationManager) getActivity()
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.cancel(Constants.notificationID);
 	}
 
 }

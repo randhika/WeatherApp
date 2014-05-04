@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 public class WeatherServiceBroadcastReciver extends BroadcastReceiver {
 	private Context context;
+	private static final int notificationID = 111226;
 	private NotificationCompat.Builder nBuilder;
 	private NotificationManager mNotificationManager;
 
@@ -42,7 +43,7 @@ public class WeatherServiceBroadcastReciver extends BroadcastReceiver {
 				.setContentTitle(
 						context.getResources().getText(R.string.app_name))
 				.setContentText(temp);
-		mNotificationManager.notify(Constants.notificationID, nBuilder.build());
+		mNotificationManager.notify(notificationID, nBuilder.build());
 	}
 
 }

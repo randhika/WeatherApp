@@ -5,7 +5,6 @@ import java.util.Calendar;
 import Misc.Constants;
 import Misc.UserPreferences;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -59,16 +58,8 @@ public class SettingsFragment extends Fragment implements
 		MainActivity activity = (MainActivity) getActivity();
 		if (changeNotificationState.isChecked()) {
 			activity.startServiceRepeating();
-		} else {
+		} else
 			activity.stopServiceRepeating();
-			removeNotifications();
-		}
-	}
-
-	private void removeNotifications() {
-		NotificationManager nm = (NotificationManager) getActivity()
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.cancel(Constants.notificationID);
 	}
 
 }

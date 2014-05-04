@@ -59,10 +59,8 @@ public class SettingsFragment extends Fragment implements
 		MainActivity activity = (MainActivity) getActivity();
 		if (changeNotificationState.isChecked()) {
 			activity.startServiceRepeating();
-		} else {
+		} else
 			activity.stopServiceRepeating();
-			removeNotifications();
-		}
 	}
 
 	private void removeNotifications() {

@@ -16,7 +16,7 @@ public class Constants {
 
 	public static String PICK_CONTACT = "PICK_CONTACT";
 
-	public static long SERVICE_UPDATE_TIME = 3 * 10000;
+	public static long SERVICE_UPDATE_TIME = 3 * 100;
 
 	public static String SERVICE_INTENT_WEATEHR_TEMP_EXTRA = "SERVICE_INTENT_WEATEHR_TEMP_EXTRA";
 	
