@@ -19,8 +19,8 @@ public class Constants {
 	public static long SERVICE_UPDATE_TIME = 3 * 10000;
 
 	public static String SERVICE_INTENT_WEATEHR_TEMP_EXTRA = "SERVICE_INTENT_WEATEHR_TEMP_EXTRA";
-
+	
 	public static String DRAWER_ITEM_POSITION_KEY = "DRAWER_ITEM_POSITION_KEY";
-	public static String SHARED_PREFERENCES_KEY = "SHARED_PREFERENCES_KEY";
+	public static String SHARED_PREFERENCES_KEY   = "SHARED_PREFERENCES_KEY";
 	public static final int notificationID = 111226;
 }
